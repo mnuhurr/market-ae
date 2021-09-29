@@ -1,15 +1,12 @@
 
 import os
-from datetime import datetime, date
 
 import numpy as np
 import pandas as pd
 import tensorflow as tf
 
-from stockstats import StockDataFrame
-
 from common import load_settings
-from models import get_autoencoder
+from models import get_autoencoder, VariationalAutoencoder
 from data import construct_sequences, construct_data
 
 
@@ -46,12 +43,11 @@ def main():
 
     # get model
     data_dim = train_seqs.shape[1:]
-    model = get_autoencoder(data_dim, latent_dim=latent_dim, num_filters=num_filters, num_conv_layers=num_conv_layers)
+    #model = get_autoencoder(data_dim, latent_dim=latent_dim, num_filters=num_filters, num_conv_layers=num_conv_layers)
+    model = VariationalAutoencoder(data_dim, latent_dim=latent_dim, num_filters=num_filters, num_conv_layers=num_conv_layers)
 
     optimizer = tf.keras.optimizers.Adam(learning_rate=learning_rate)
     model.compile(optimizer=optimizer, loss='mse', metrics=['mse'])
-
-    model.summary()
 
     model.fit(train_dataset, epochs=epochs)
 
