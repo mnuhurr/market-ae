@@ -40,5 +40,3 @@ def get_autoencoder(input_dim, latent_dim=8, num_filters=64, num_conv_layers=3):
     return model
 
 
-if __name__ == '__main__':
-    test()
