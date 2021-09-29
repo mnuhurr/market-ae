@@ -20,6 +20,7 @@ def main():
     sequence_len = cfg.get('sequence_len', 5)
     latent_dim = cfg.get('latent_dim', 8)
     num_filters = cfg.get('num_filters', 64)
+    num_conv_layers = cfg.get('num_conv_layers', 2)
 
     batch_size = cfg.get('batch_size', 64)
     epochs = cfg.get('epochs', 50)
@@ -45,7 +46,7 @@ def main():
 
     # get model
     data_dim = train_seqs.shape[1:]
-    model = get_autoencoder(data_dim, latent_dim=latent_dim, num_filters=num_filters)
+    model = get_autoencoder(data_dim, latent_dim=latent_dim, num_filters=num_filters, num_conv_layers=num_conv_layers)
 
     optimizer = tf.keras.optimizers.Adam(learning_rate=learning_rate)
     model.compile(optimizer=optimizer, loss='mse', metrics=['mse'])
