@@ -1,4 +1,6 @@
 settings.yaml
 data_cache
+model
+
 .idea
 __pycache__
