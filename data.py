@@ -85,6 +85,14 @@ def construct_data(cfg):
 
 
 def construct_sequences(data, sequence_len):
+    """
+    split input data into sequences of given length. runs along the first axis of the input data, while the other
+    dimensions are kept as they are.
+
+    :param data:
+    :param sequence_len:
+    :return:
+    """
     num_sequences = data.shape[0] - sequence_len + 1
 
     data_dim = data.shape[1:]
