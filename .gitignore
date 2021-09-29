@@ -3,5 +3,6 @@ data_cache
 results
 model
 
+*.ipynb
 .idea
 __pycache__
