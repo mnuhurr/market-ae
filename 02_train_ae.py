@@ -13,8 +13,8 @@ from models import get_autoencoder
 from data import construct_sequences, construct_data
 
 
-
 def main():
+    # load and extract configuration
     cfg = load_settings()
 
     sequence_len = cfg.get('sequence_len', 5)
@@ -32,22 +32,22 @@ def main():
     model_fn = os.path.join(model_dir, model_name)
     os.makedirs(model_dir, exist_ok=True)
 
+    # construct dataset from the downloaded csv files
     train_data, eval_data, eval_index = construct_data(cfg)
 
-    # save eval data for later use
+    # save the evaluation data for later use
     eval_df = pd.DataFrame.from_records(eval_data, index=eval_index)
     eval_df.to_csv(os.path.join(cache_dir, 'eval_data.csv'))
 
+    # split data into sequences and create a tf dataset for training
     train_seqs = construct_sequences(train_data, sequence_len)
-
-    data_dim = train_seqs.shape[1:]
-
     train_dataset = tf.data.Dataset.from_tensor_slices((train_seqs, train_seqs)).shuffle(4096).batch(batch_size)
 
+    # get model
+    data_dim = train_seqs.shape[1:]
     model = get_autoencoder(data_dim, latent_dim=latent_dim, num_filters=num_filters)
 
     optimizer = tf.keras.optimizers.Adam(learning_rate=learning_rate)
-
     model.compile(optimizer=optimizer, loss='mse', metrics=['mse'])
 
     model.summary()
