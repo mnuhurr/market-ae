@@ -18,8 +18,9 @@ directory config:
 - models_dir
 - results_dir
 
-start_date: startpoint of the data to download
-split_date: everything before split_date is training data, everything after is evaluation data
+dates:
+- start_date: startpoint of the data to download
+- split_date: everything before split_date is training data, everything after is evaluation data
 
 example settings.yaml:
 ```
