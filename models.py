@@ -21,17 +21,11 @@ def get_autoencoder(input_dim, latent_dim=8, num_filters=64):
     model.add(Conv1D(num_filters, kernel_size=3, activation='relu'))
     model.add(BatchNormalization())
 
-    model.add(Conv1D(num_filters, kernel_size=3, activation='relu'))
-    model.add(BatchNormalization())
-
     model.add(Flatten())
     model.add(Dense(latent_dim))
 
-    model.add(Dense((seq_len - 8) * num_filters))
-    model.add(Reshape((seq_len - 8, num_filters)))
-
-    model.add(Conv1DTranspose(num_filters, kernel_size=3, activation='leaky_relu'))
-    model.add(BatchNormalization())
+    model.add(Dense((seq_len - 6) * num_filters))
+    model.add(Reshape((seq_len - 6, num_filters)))
 
     model.add(Conv1DTranspose(num_filters, kernel_size=3, activation='leaky_relu'))
     model.add(BatchNormalization())

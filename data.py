@@ -8,13 +8,32 @@ import numpy as np
 import pandas as pd
 
 
-def df_indicators(df):
+def df_indicators(df, use_columns=None):
+    """
+    convert a df of a single share data into a df of to feed to the
+    autoencoder
+
+    :param df: yfinance df
+    :param use_columns: list of columns to use. default is ['log_return', 'macd', 'rsi_6', 'cci', 'adx']
+    :return: df of indicators/suitable data for the autoencoder
+    """
+
+    if use_columns is None:
+        use_columns = ['log_return', 'macd', 'rsi_6', 'cci', 'adx']
+
     sdf = StockDataFrame.retype(df.copy())
     sdf['log_return'] = sdf['close'].apply(np.log).diff()
-    return sdf[['log_return', 'macd', 'rsi_6', 'cci', 'adx']]
+    return sdf[use_columns]
 
 
 def construct_data(cfg):
+    """
+    construct training and evaluation datasets according to the config dict.
+    returns also the index (dates) for the eval data
+
+    :param cfg: config dict
+    :return: train_data, eval_data, eval_data_index
+    """
     cache_dir = cfg.get('cache_dir', 'data_cache')
     csv_dir = os.path.join(cache_dir, 'csv')
 
